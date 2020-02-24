@@ -4,7 +4,7 @@ _Diff_ and _deinit_ to *def*initely clean up resources. Compares two data struct
 
 A small [subset](https://mitranim.com/espo/#-deinitdiff-prev-next-) of [Espo](https://mitranim.com/espo/), extracted as a separate library.
 
-Useful for automatic cleanup when you store stuff in "immutable" structures, creating new versions instead of mutating them. Works well with ES2018 object spread or [Emerge](https://github.com/Mitranim/emerge).
+Useful for automatic cleanup when you store stuff in "immutable" structures, creating new versions instead of mutating them. Works well with ES2018 object spread or [Emerge](https://github.com/mitranim/emerge).
 
 
 ## Why
@@ -14,9 +14,7 @@ Automatic resource cleanup: store and remove objects without worrying about forg
 
 ## Installation
 
-```js
-yarn add -E definit
-# or
+```sh
 npm i -E definit
 ```
 
@@ -35,7 +33,7 @@ Definition of “plain data”:
 
 Everything else is considered non-data and is not traversed.
 
-Resilient to exceptions: if a deiniter or a property accessor produces an exception, deinitDiff will still traverse the rest of the tree, delaying exceptions until the end.
+Resilient to exceptions: if a deiniter or a property accessor produces an exception, `deinitDiff` will still traverse the rest of the tree, delaying exceptions until the end.
 
 Avoids cyclic references.
 

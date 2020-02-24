@@ -3,11 +3,11 @@ export function isDeinitable(value) {
 }
 
 export function deinitDiff(prev, next) {
-  deinitDiffAcyclic(prev, next, [])
+  deinitDiffAcyclic(prev, next, setNew())
 }
 
 export function deinitDeep(value) {
-  deinitDiffAcyclic(value, undefined, [])
+  deinitDiffAcyclic(value, undefined, setNew())
 }
 
 function deinitDiffAcyclic(prev, next, visitedRefs) {
@@ -19,13 +19,13 @@ function deinitDiffAcyclic(prev, next, visitedRefs) {
   }
 
   // Don't bother traversing non-plain structures.
-  // This allows to safely include third party refs with unknown structure.
+  // This allows to safely include third party objects with unknown structure.
   if (!isArray(prev) && !isDict(prev)) return
 
-  // This skips cyclic references.
-  if (includes(visitedRefs, prev)) return
+  // This avoids cyclic references.
+  if (setHas(visitedRefs, prev)) return
 
-  visitedRefs.push(prev)
+  setAdd(visitedRefs, prev)
   diffAndDeinit(prev, next, visitedRefs)
 }
 
@@ -56,6 +56,24 @@ function diffAndDeinit(prev, next, visitedRefs) {
     catch (err) {error = err}
   }
   if (error) throw error
+}
+
+/*
+Store visited refs in a set where possible, falling back on a list. For large
+structures, a list becomes our bottleneck; a set is MUCH faster.
+*/
+let setNew = undefined
+let setAdd = undefined
+let setHas = undefined
+if (typeof Set === 'function') {
+  setNew = function setNew() {return new Set()}
+  setAdd = function setAdd(set, val) {set.add(val)}
+  setHas = function setHas(set, val) {return set.has(val)}
+}
+else {
+  setNew = function setNew() {return []}
+  setAdd = function setAdd(set, val) {set.push(val)}
+  setHas = function setHas(set, val) {return includes(set, val)}
 }
 
 function includes(list, value) {

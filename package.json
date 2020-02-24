@@ -1,6 +1,6 @@
 {
   "name": "definit",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "definit.cjs.js",
   "module": "definit.es.js",
   "scripts": {
@@ -15,7 +15,7 @@
     "babel-eslint": "8.2.6",
     "eslint_d": "5.3.1"
   },
-  "description": "Compares two data structures and calls a destructor method on every inner object that's been 'removed'.",
+  "description": "'Diff and deinit'. Compares data structures, calling destructors on 'removed' objects.",
   "keywords": [
     "diff",
     "cleanup",
